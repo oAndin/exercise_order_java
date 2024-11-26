@@ -1,7 +1,4 @@
-import Entities.Client;
-import Entities.Order;
-import Entities.OrderStatus;
-import Entities.Product;
+import Entities.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,43 +28,38 @@ public class Main {
         // Creating the client object
         Client client = new Client(name,email,birthDate);
 
-
-        // Checking the client object
-//        System.out.println(
-//                order.getDate() +
-//                client.toString()
-//        );
-
         System.out.println("Enter order data: ");
-        System.out.println("Status: " + OrderStatus.PROCESSING);
+        OrderStatus status = OrderStatus.valueOf(scanner.next());
 
-        System.out.println("How many items to this order");
+        Order order = new Order(new Date(), status, client);
+
+        System.out.println("How many items to this order?");
         int numberItems = scanner.nextInt();
 
         for (int i = 0; i < numberItems; i++) {
-            System.out.println("Ennter #" + (i + 1) + " item data:");
+
+            System.out.println("Enter #" + (i + 1) + " item data:");
+
             System.out.println("Product name: ");
             String productName = scanner.nextLine();
+            scanner.nextLine();
+
             System.out.println("Product price: ");
             Double productPrice = scanner.nextDouble();
+
             System.out.println("Product quantity: ");
             int productQuantity = scanner.nextInt();
 
-            Product product = new Product(productName, productPrice, productQuantity);
+            Product product = new Product(productName, productPrice);
+
+            OrderItem orderItem = new OrderItem(productQuantity, productPrice, product);
+
+            order.addItem(orderItem);
         }
 
-        // Yes, another instance, the order object
-        Order order = new Order();
-
-        System.out.println("ORDER SUMMARY:");
-        System.out.println("Order moment: " + order.getDate());
-        System.out.println("Order status: " + OrderStatus.PROCESSING);
-        System.out.println(
-                "Client: " + client.getName() +
-                ", " + client.getDateOfBirth() +
-                " - " + client.getEmail()
-        );
-        System.out.println("Order items: ");
         System.out.println();
+        System.out.println(order);
+
+        scanner .close();
     }
 }
